@@ -1,48 +1,35 @@
-let amigos = [];
+// Lista para almacenar los nombres de los amigos
+const amigos = [];
 
-/**
- * Agrega un nuevo amigo al array de amigos.
- * Valida que el nombre no esté vacío antes de agregarlo y actualiza la lista visual.
- */
-function agregarAmigo() {
-    let nombreAmigo = document.getElementById("amigo").value;
+// Función para agregar un nuevo amigo
+const agregarAmigo = () => {
+    const inputAmigo = document.getElementById("amigo");
+    const nombreAmigo = inputAmigo.value.trim();
 
-    if (nombreAmigo.trim() === "") {
-        alert("Por favor, inserte un nombre");
-    } else {
-        amigos.push(nombreAmigo);
-        document.querySelector("#amigo").value = "";
-        mostrarListaAmigo();
+    if (!nombreAmigo) {
+        alert("Por favor, ingresa un nombre válido.");
+        return;
     }
-}
 
-/**
- * Actualiza la visualización de la lista de amigos en el DOM, creando elementos <li> para cada amigo.
- */
-function mostrarListaAmigo() {
-    let listaAmigos = document.querySelector("#listaAmigos");
-    listaAmigos.innerHTML = "";
+    amigos.push(nombreAmigo);
+    inputAmigo.value = "";
+    actualizarListaAmigos();
+};
 
-    for (let index = 0; index < amigos.length; index++) {
-        const element = amigos[index];
+// Función para mostrar la lista actualizada de amigos en el DOM
+const actualizarListaAmigos = () => {
+    const listaAmigos = document.querySelector("#listaAmigos");
+    listaAmigos.innerHTML = amigos.map(amigo => `<li>${amigo}</li>`).join("");
+};
 
-        let listaHTML = document.createElement("li");
-        listaHTML.textContent = element;
-        listaAmigos.appendChild(listaHTML);
+// Función para realizar el sorteo de un amigo aleatorio
+const sortearAmigo = () => {
+    if (amigos.length === 0) {
+        alert("Agrega al menos un amigo antes de sortear.");
+        return;
     }
-}
 
-/**
- * Sortea y muestra un amigo de la lista de amigos de manera aleatoria.
- * Verifica que la lista no esté vacía antes de realizar el sorteo.
- */
-function sortearAmigo() {
-    let cantidadAmigos = amigos.length;
-    if (cantidadAmigos === 0) {
-        alert("Por favor, inserte un nombre antes de sortear");
-    } else {
-        let indiceAmigo = Math.floor(Math.random() * cantidadAmigos);
-        let resultadoHTML = document.querySelector("#resultado");
-        resultadoHTML.innerHTML = amigos[indiceAmigo];
-    }
-}
+    const indiceAleatorio = Math.floor(Math.random() * amigos.length);
+    const resultado = document.querySelector("#resultado");
+    resultado.textContent = `🎁 El amigo secreto es: ${amigos[indiceAleatorio]} 🎉`;
+};
